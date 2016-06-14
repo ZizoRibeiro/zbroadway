@@ -4,10 +4,13 @@
   </div>
   
   <div class="col-md-8">
-    <div class="play-info>
+    <div class="play-info">
       <h2 class="play-title"><%= @play.title %></h2>
       <h3 class="play-director"><span><em>From: </em></span><%= @play.director %></h3>
       <h4 class="play-director"><%= @play.category.name %></h4>
+      <h4 class="avg-rating">Avarage Rating</h4>
+      <div class="average-review-rating" data-score=<%=@average_review %></div>
+      <span class="number-of-reviews"><em>From: </em><%= @play.reviews.count %> reviews </span>
       <p class="play-desc"><%= @play.description %></p>
     </div>
   </div>
@@ -20,8 +23,8 @@
       <h1> Reviews </div>
         <%= render @play.reviews %>
         <div>
-          <%= link_to "Add Reviews", new_play_review_path(@play), class:
-            "btn-custom" %>
+          <%= link_to "Add Reviews", new_play_review_path(@play), 
+            class:"btn-custom" %>
         </div>
     </div>
   </div>
@@ -32,7 +35,27 @@
     <% if @play.user.id == current_user.id %>
       <%= link_to "Edit", edit_play_path(@play), class: "btn btn-custom" %>
       <%= link_to "Delete", play_path(@play), method: :delete, 
-        data: {confirm: "ARE YOU SURE?"}, class: "btn btn-custom" %>
+        data: { confirm: "ARE YOU SURE?" }, class: "btn btn-custom" %>
     <% end %>
   <% end %>
 </div>
+
+<script>
+	$('.review-rating').raty({
+		readOnly: true,
+		score: function() {
+			return $(this).attr('data-score');
+		},
+		path: '/assets/'
+	});
+</script>
+
+<script>
+	$('.average-review-rating').raty({
+		readOnly: true,
+		path: '/assets/',
+		score: function() {
+			return $(this).attr('data-score')
+		}
+	});
+</script>
